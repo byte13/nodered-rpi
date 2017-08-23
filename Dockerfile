@@ -1,7 +1,8 @@
 # References :
 # https://flows.nodered.org/node/node-red-contrib-gpio
 # https://raspberrypi.stackexchange.com/questions/48303/install-nodejs-for-all-raspberry-pi#48313
-FROM FROM resin/rpi-raspbian:latest
+# https://nodered.org/docs/hardware/raspberrypi
+#FROM resin/rpi-raspbian:latest
 FROM byte13/rpi-raspbian-nodejs:6.11.2 
 
 # Install usefull utilities
@@ -29,6 +30,7 @@ RUN npm install -g rpi-gpio
 RUN npm install node-red-contrib-gpio
 RUN npm install -g node-red/node-red-auth-twitter
 RUN npm install -g node-red/node-red-auth-github
+RUN npm install -g node-red-contrib-camerapi
 
 #
 # Settings to activate admin authentication
@@ -36,7 +38,12 @@ RUN npm install -g node-red/node-red-auth-github
 RUN if [ -f /usr/local/lib/node_modules/node-red/settings.js ] ; then mv /usr/local/lib/node_modules/node-red/settings.js /usr/local/lib/node_modules/node-red/settings.js.dist ; fi
 COPY settings.js /usr/local/lib/node_modules/node-red/settings.js
 
-RUN /usr/sbin/useradd -d /home/nodered -m nodered
+# To make sure nrgpio can be invoked with basename (assuming /usr/local/bin is in $PATH)
+RUN ln -s /usr/local/lib/node_modules/node-red/nodes/core/hardware/nrgpio /usr/local/bin/nrgpio
+RUN ln -s /usr/local/lib/node_modules/node-red/nodes/core/hardware/nrgpio.py /usr/local/bin/nrgpio.py
+
+RUN /usr/sbin/useradd -d /home/nodered -m nodered \
+    && echo "nodered  ALL=(ALL) NOPASSWD: /usr/bin/python" >>/etc/sudoers
 USER nodered
 
 # Define what to start by defaut when running the container
