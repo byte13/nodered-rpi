@@ -10,7 +10,7 @@ RUN apt-get update && \
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apt-utils curl wget sudo unzip iputils-ping dnsutils net-tools nmap build-essential python-rpi.gpio git
 
 # 
-# Install NodeJS from ARM tarball
+# Ise image is resin/rpi-raspbian:latest, install NodeJS from ARM tarball
 #
 # RUN cd /tmp
 # RUN https://nodejs.org/dist/v8.4.0/node-v8.4.0-linux-armv7l.tar.xz && tar xvf node-v8.4.0-linux-armv7l.tar.xz
