@@ -12,3 +12,7 @@ Suggestions welcome :-)
 According to https://forums.docker.com/t/automated-build-raspberry-pi-based-image-on-docker-hub/4155/7
 it cannot be used as a source for auto-build on Docker Hub or Docker Store because 
 the base image is for ARM architecture.
+
+setting.js contains a default admin password which is : Gaga-2017
+Please change it locally using node-red-admin hash-pw
+as well as templates to leverage Twitter and Github WebSSO
