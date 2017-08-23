@@ -1,11 +1,10 @@
 # References :
 # https://flows.nodered.org/node/node-red-contrib-gpio
 # https://raspberrypi.stackexchange.com/questions/48303/install-nodejs-for-all-raspberry-pi#48313
+FROM FROM resin/rpi-raspbian:latest
 FROM byte13/rpi-raspbian-nodejs:6.11.2 
 
-MAINTAINER admin@byte13.org
-
-# Install NodeJS packages and usefull utilities
+# Install usefull utilities
 RUN apt-get update && \
     apt-get -y dist-upgrade
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apt-utils curl wget sudo unzip iputils-ping dnsutils net-tools nmap build-essential python-rpi.gpio git
