@@ -46,8 +46,8 @@ RUN /usr/sbin/groupadd nodered -g 1234 \
     && /usr/sbin/useradd -d /home/nodered -m nodered -u 1234 -g nodered \
     && echo "nodered  ALL=(ALL) NOPASSWD: /usr/bin/python" >>/etc/sudoers
 
-RUN if ! [ -d /HOSTDIR ] ; then mkdir /HOSTDIR; chown root:nodered /HOSTDIR; chmod 770 /HOSTDIR; fi
-VOLUME /HOSTDIR
+RUN if ! [ -d /vol1 ] ; then mkdir /vol1; chown root:nodered /vol1; chmod 770 /vol1; fi
+VOLUME /vol1
 
 USER nodered
 

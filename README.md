@@ -8,6 +8,9 @@ By default, this image runs NodeRED under nodered account (UID 1234) and nodered
 If on wants to access the GPIO, she must run the container as root and privileged, using the following docker parameters :
 $ docker run -p 7777:80 -u root --privileged -d <image name>
 
+If one wants to map a host directory inti the container, she can use the following syntax :
+$ docker run -p 7777:80 -v /HOSTDIR:<host directory> -d <image name> 
+
 This Docker file adds NodeRED on top of byte13/rpi-raspbian-nodejs:6.11.2.
 The build possibly updates the base image and utilities.
 
