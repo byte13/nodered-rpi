@@ -42,8 +42,13 @@ COPY settings.js /usr/local/lib/node_modules/node-red/settings.js
 RUN ln -s /usr/local/lib/node_modules/node-red/nodes/core/hardware/nrgpio /usr/local/bin/nrgpio
 RUN ln -s /usr/local/lib/node_modules/node-red/nodes/core/hardware/nrgpio.py /usr/local/bin/nrgpio.py
 
-RUN /usr/sbin/useradd -d /home/nodered -m nodered \
+RUN /usr/sbin/groupadd nodered -g 1234 \ 
+    && /usr/sbin/useradd -d /home/nodered -m nodered -u 1234 -g nodered \
     && echo "nodered  ALL=(ALL) NOPASSWD: /usr/bin/python" >>/etc/sudoers
+
+RUN if ! [ -d /HOSTDIR ] ; then mkdir /HOSTDIR; chown root:nodered /HOSTDIR; chmod 770 /HOSTDIR; fi
+VOLUME /HOSTDIR
+
 USER nodered
 
 # Define what to start by defaut when running the container
