@@ -3,12 +3,12 @@
 # https://raspberrypi.stackexchange.com/questions/48303/install-nodejs-for-all-raspberry-pi#48313
 # https://nodered.org/docs/hardware/raspberrypi
 #FROM resin/rpi-raspbian:latest
-FROM byte13/rpi-raspbian-nodejs:6.11.2 
+FROM byte13/rpi-raspbian-nodejs:6.11.3
 
 # Install usefull utilities
 RUN apt-get update && \
     apt-get -y dist-upgrade
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apt-utils curl wget sudo unzip iputils-ping dnsutils net-tools nmap build-essential python-rpi.gpio git
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apt-utils curl wget sudo unzip iproute2 iputils-ping dnsutils net-tools nmap build-essential python-rpi.gpio python-picamera git
 
 # 
 # Ise image is resin/rpi-raspbian:latest, install NodeJS from ARM tarball
@@ -32,6 +32,14 @@ RUN npm install -g node-red/node-red-auth-twitter
 RUN npm install -g node-red/node-red-auth-github
 RUN npm install -g node-red-contrib-camerapi
 
+# Possibly install latest Mosquitto client (for communication over MQTT)
+#RUN sudo wget http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key && \
+#    sudo apt-key add mosquitto-repo.gpg.key && \
+#    cd /etc/apt/sources.list.d/ && \
+#    sudo wget http://repo.mosquitto.org/debian/mosquitto-stretch.list && \
+#    sudo apt-get update && \
+#    sudo apt-get install mosquitto-clients python-mosquitto 
+
 #
 # Settings to activate admin authentication
 #
@@ -50,6 +58,9 @@ RUN if ! [ -d /vol1 ] ; then mkdir /vol1; chown root:nodered /vol1; chmod 770 /v
 VOLUME /vol1
 
 USER nodered
+
+# Next section to be updated in case image is run as a Swarm service to me monitored
+# HEALTCHECK
 
 # Define what to start by defaut when running the container
 ENV NRPORT=7777
