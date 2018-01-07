@@ -3,7 +3,7 @@
 # https://raspberrypi.stackexchange.com/questions/48303/install-nodejs-for-all-raspberry-pi#48313
 # https://nodered.org/docs/hardware/raspberrypi
 #FROM resin/rpi-raspbian:latest
-FROM byte13/rpi-raspbian-nodejs:6.11.3
+FROM byte13/rpi-raspbian-nodejs:8.9.4
 
 # Install usefull utilities
 RUN apt-get update && \
@@ -11,7 +11,7 @@ RUN apt-get update && \
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apt-utils curl wget sudo unzip iproute2 iputils-ping dnsutils net-tools nmap build-essential python-rpi.gpio python-picamera git
 
 # 
-# Ise image is resin/rpi-raspbian:latest, install NodeJS from ARM tarball
+# If the base image is resin/rpi-raspbian:latest, install NodeJS from ARM tarball
 #
 # RUN cd /tmp
 # RUN https://nodejs.org/dist/v8.4.0/node-v8.4.0-linux-armv7l.tar.xz && tar xvf node-v8.4.0-linux-armv7l.tar.xz
@@ -24,13 +24,26 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apt-utils curl wget sudo u
 #RUN /bin/bash <(curl -sL https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/update-nodejs-and-nodered)
 #
 # Install NodeRed modules
+#
+# Next line as workaround due to some access errors since NodeJS 8
+# https://stackoverflow.com/questions/44633419/no-access-permission-error-with-npm-global-install-on-docker-image
+# The problem is because while NPM runs globally installed module scripts as 
+# the nobody user, which kinds of makes sense, recent versions of NPM started 
+# setting the file permissions for node modules to root. As a result module 
+# scripts are no longer allowed to create files and directories in their module.
+# A simple workaround, which makes sense in a docker environment, is to set 
+# the NPM default global user back to root, like so:
+
+RUN npm -g config set user root
+
 #RUN npm install -g openid-connect
-RUN npm install -g --unsafe-perm node-red node-red-admin
-RUN npm install -g rpi-gpio 
-RUN npm install node-red-contrib-gpio
-RUN npm install -g node-red/node-red-auth-twitter
-RUN npm install -g node-red/node-red-auth-github
-RUN npm install -g node-red-contrib-camerapi
+RUN npm install -g --unsafe-perm node-red node-red-admin && \
+    npm install -g rpi-gpio  && \
+    npm install node-red-contrib-gpio && \
+    npm install -g node-red/node-red-auth-twitter && \
+    npm install -g node-red/node-red-auth-github && \
+    npm install -g node-red-contrib-camerapi && \
+    npm install -g node-red-dashboard
 
 # Possibly install latest Mosquitto client (for communication over MQTT)
 #RUN sudo wget http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key && \
