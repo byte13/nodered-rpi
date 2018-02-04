@@ -3,7 +3,7 @@
 # https://raspberrypi.stackexchange.com/questions/48303/install-nodejs-for-all-raspberry-pi#48313
 # https://nodered.org/docs/hardware/raspberrypi
 #FROM resin/rpi-raspbian:latest
-FROM byte13/rpi-raspbian-nodejs:8.9.4
+FROM byte13/rpi-raspbian-nodejs:9.5.0
 
 # Install usefull utilities
 RUN apt-get update && \
@@ -75,8 +75,9 @@ USER nodered
 # Next section to be updated in case image is run as a Swarm service to me monitored
 # HEALTCHECK
 
-# Define what to start by defaut when running the container
 ENV NRPORT=7777
+
+# Define what to start by defaut when running the container
 #ENTRYPOINT ["/usr/local/bin/node","--max-old-space-size=256","red.js","-p","7777"]
-CMD ["/usr/local/bin/node-red-pi","--max-old-space-size=256","-p","7777"]
+CMD /usr/local/bin/node-red-pi --max-old-space-size=256 -s ${LOCALSETTINGS} -p ${NRPORT} 
 
