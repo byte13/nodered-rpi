@@ -3,7 +3,7 @@
 # https://raspberrypi.stackexchange.com/questions/48303/install-nodejs-for-all-raspberry-pi#48313
 # https://nodered.org/docs/hardware/raspberrypi
 #FROM resin/rpi-raspbian:latest
-FROM byte13/rpi-raspbian-nodejs:9.5.0
+FROM byte13/rpi-raspbian-nodejs:13.2.0
 
 # Install usefull utilities
 RUN apt-get update && \
