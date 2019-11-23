@@ -65,7 +65,7 @@ RUN ln -s /usr/local/lib/node_modules/node-red/nodes/core/hardware/nrgpio /usr/l
 RUN ln -s /usr/local/lib/node_modules/node-red/nodes/core/hardware/nrgpio.py /usr/local/bin/nrgpio.py
 
 RUN /usr/sbin/groupadd nodered -g 1234 \ 
-    && /usr/sbin/useradd -d /home/nodered -m nodered -u 1234 -g nodered \
+    && /usr/sbin/useradd -d /home/nodered -m nodered -u 1001 -g nodered \
     && echo "nodered  ALL=(ALL) NOPASSWD: /usr/bin/python" >>/etc/sudoers
 
 RUN if ! [ -d /vol1 ] ; then mkdir /vol1; chown root:nodered /vol1; chmod 770 /vol1; fi
