@@ -40,6 +40,7 @@ RUN npm -g config set user root
 RUN npm install -g --unsafe-perm node-red node-red-admin && \
     npm install -g rpi-gpio  && \
     npm install node-red-contrib-gpio && \
+    npm install node-red-contrib-openzwave && \
     npm install -g node-red/node-red-auth-twitter && \
     npm install -g node-red/node-red-auth-github && \
     npm install -g node-red-contrib-camerapi && \
